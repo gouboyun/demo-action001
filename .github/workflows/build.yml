@@ -36,10 +36,10 @@ jobs:
         echo ${{ github.repository }}:${{github.REF_NAME}}-${{github.run_id}}
         echo ${{ github.ACTOR }}
 
-    # - name: build and push docker image
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     context: .
-    #     push: true
-    #     platforms: linux/amd64,linux/arm64
-    #     tags: ${{ github.repository }}:${{github.REF_NAME}}-${{github.run_id}}
+    - name: build and push docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ github.ACTOR }}/${{ github.repository }}:${{github.REF_NAME}}-${{github.run_id}}
