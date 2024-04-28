@@ -42,4 +42,4 @@ jobs:
         context: .
         push: true
         platforms: linux/amd64,linux/arm64
-        tags: ${{ github.ACTOR }}/${{ github.repository }}:${{github.REF_NAME}}-${{github.run_id}}
+        tags: morya/gouboyun-demo:${{github.REF_NAME}}-${{github.run_id}}
