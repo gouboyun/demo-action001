@@ -1,48 +1,49 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+name: Build Qt6 Project with WebEngine on Windows
 
-name: build
-
-on:
-  push:
-    branches: [ "master", "main"]
-#   pull_request:
-#     branches: [ "master" ]
-
-env:
-  DOCKER_IMAGE: morya/demo-action001
+on: [push, pull_request]  # 触发条件，可以是push到仓库或者pull request
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # 运行环境，指定为Windows最新版本
 
     steps:
-    - uses: actions/checkout@v4
-    # - name: Use Node.js ${{ matrix.node-version }}
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
-    #     cache: 'npm'
-    # - run: npm ci
-    # - run: npm run build --if-present
+    - name: Checkout repository
+      uses: actions/checkout@v3  # 检出代码
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
+    - name: Set up Qt6 with WebEngine
+      uses: jurplel/install-qt-action@v2
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        version: '6.4.1'  # 指定Qt版本
+        target: 'windows'  # 指定目标平台为Windows
+        arch: 'win64_msvc2019_64'  # 指定架构，这里使用Windows 64位
+        modules: 'webengine'  # 指定需要安装的Qt模块，包括WebEngine
+        dir: '${{ github.workspace }}/Qt'  # 指定Qt安装目录
 
-    - run: |
-        echo ${{ github.repository }}:${{github.REF_NAME}}-${{github.run_id}}
-        echo ${{ github.ACTOR }}
+    - name: Install dependencies
+      run: |
+        # 在Windows上，可能需要安装额外的依赖，例如CMake或其他工具
+        # 这里以CMake为例，实际依赖根据项目需求添加
+        choco install cmake -y
 
-    - name: build and push docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        platforms: linux/amd64,linux/arm64
-        tags: $DOCKER_IMAGE:${{github.REF_NAME}}-${{github.run_id}}
+    - name: Configure project
+      run: |
+        # 激活Qt6环境，路径可能需要根据实际情况调整
+        $env:Path += ";${{ github.workspace }}/Qt/6.4.1/bin"
+        # 配置项目，这里假设使用qmake
+        qmake.exe CONFIG-=debug CONFIG+=release MyProject.pro
+
+    - name: Build project
+      run: |
+        # 构建项目
+        nmake.exe
+
+    - name: Test project
+      run: |
+        # 运行测试，如果有的话
+        # test-MyProject.exe
+
+    - name: Deploy
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        # 部署步骤，例如上传构建产物到服务器或发布到GitHub Releases
+        # 实际部署命令根据需求添加
