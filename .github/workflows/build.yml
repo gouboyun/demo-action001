@@ -13,7 +13,7 @@ jobs:
     - name: Set up Qt6 with WebEngine
       uses: jurplel/install-qt-action@v2
       with:
-        version: '6.4.1'  # 指定Qt版本
+        version: '6.7.3'  # 指定Qt版本
         target: 'windows'  # 指定目标平台为Windows
         arch: 'win64_msvc2019_64'  # 指定架构，这里使用Windows 64位
         modules: 'webengine'  # 指定需要安装的Qt模块，包括WebEngine
