@@ -1,19 +1,4 @@
-name: bad
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - master
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          date;
-          echo hello;
 
 # name: Build Qt6 Project with WebEngine on Windows
 
