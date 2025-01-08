@@ -1,49 +1,49 @@
-name: Build Qt6 Project with WebEngine on Windows
+# name: Build Qt6 Project with WebEngine on Windows
 
-on: [push, pull_request]  # 触发条件，可以是push到仓库或者pull request
+# on: [push, pull_request]  # 触发条件，可以是push到仓库或者pull request
 
-jobs:
-  build:
-    runs-on: windows-latest  # 运行环境，指定为Windows最新版本
+# jobs:
+#   build:
+#     runs-on: windows-latest  # 运行环境，指定为Windows最新版本
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3  # 检出代码
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v3  # 检出代码
 
-    - name: Set up Qt6 with WebEngine
-      uses: jurplel/install-qt-action@v2
-      with:
-        version: '6.7.3'  # 指定Qt版本
-        target: 'windows'  # 指定目标平台为Windows
-        arch: 'win64_msvc2019_64'  # 指定架构，这里使用Windows 64位
-        modules: 'webengine'  # 指定需要安装的Qt模块，包括WebEngine
-        dir: '${{ github.workspace }}/Qt'  # 指定Qt安装目录
+#     - name: Set up Qt6 with WebEngine
+#       uses: jurplel/install-qt-action@v2
+#       with:
+#         version: '6.7.3'  # 指定Qt版本
+#         target: 'windows'  # 指定目标平台为Windows
+#         arch: 'win64_msvc2019_64'  # 指定架构，这里使用Windows 64位
+#         modules: 'webengine'  # 指定需要安装的Qt模块，包括WebEngine
+#         dir: '${{ github.workspace }}/Qt'  # 指定Qt安装目录
 
-    - name: Install dependencies
-      run: |
-        # 在Windows上，可能需要安装额外的依赖，例如CMake或其他工具
-        # 这里以CMake为例，实际依赖根据项目需求添加
-        choco install cmake -y
+#     - name: Install dependencies
+#       run: |
+#         # 在Windows上，可能需要安装额外的依赖，例如CMake或其他工具
+#         # 这里以CMake为例，实际依赖根据项目需求添加
+#         choco install cmake -y
 
-    - name: Configure project
-      run: |
-        # 激活Qt6环境，路径可能需要根据实际情况调整
-        $env:Path += ";${{ github.workspace }}/Qt/6.4.1/bin"
-        # 配置项目，这里假设使用qmake
-        qmake.exe CONFIG-=debug CONFIG+=release MyProject.pro
+#     - name: Configure project
+#       run: |
+#         # 激活Qt6环境，路径可能需要根据实际情况调整
+#         $env:Path += ";${{ github.workspace }}/Qt/6.4.1/bin"
+#         # 配置项目，这里假设使用qmake
+#         qmake.exe CONFIG-=debug CONFIG+=release MyProject.pro
 
-    - name: Build project
-      run: |
-        # 构建项目
-        nmake.exe
+#     - name: Build project
+#       run: |
+#         # 构建项目
+#         nmake.exe
 
-    - name: Test project
-      run: |
-        # 运行测试，如果有的话
-        # test-MyProject.exe
+#     - name: Test project
+#       run: |
+#         # 运行测试，如果有的话
+#         # test-MyProject.exe
 
-    - name: Deploy
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        # 部署步骤，例如上传构建产物到服务器或发布到GitHub Releases
-        # 实际部署命令根据需求添加
+#     - name: Deploy
+#       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#       run: |
+#         # 部署步骤，例如上传构建产物到服务器或发布到GitHub Releases
+#         # 实际部署命令根据需求添加
