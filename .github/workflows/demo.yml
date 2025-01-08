@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - nanyou
-      - dev
+      - main
+      - master
     
 jobs:
   build-main-image:
