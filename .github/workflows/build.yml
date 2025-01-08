@@ -1,3 +1,20 @@
+name: bad
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          date;
+          echo hello;
+
 # name: Build Qt6 Project with WebEngine on Windows
 
 # on: [push, pull_request]  # 触发条件，可以是push到仓库或者pull request
