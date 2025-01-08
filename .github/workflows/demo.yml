@@ -26,16 +26,13 @@ jobs:
       - name: Set repository and image name to lowercase
         run: |
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV};
-          full_name=`echo ${IMAGE_NAME,,} | sed 's:/:-:'`;
-          platform_and_arch=`echo ${{ matrix.platform }} | sed 's:/:-:'`;
           echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV};
-          echo "MY_PLATFORM_ARCH=${platform_and_arch,,}" >> ${GITHUB_ENV};
         env:
           IMAGE_NAME: '${{ github.repository }}'
 
       - name: Prepare
         run: |
           platform=${{ matrix.platform }}
-          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          echo "PLATFORM_PAIR=${platform//\//-}" >> ${GITHUB_ENV};
           ;
           env;
