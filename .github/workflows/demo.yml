@@ -25,10 +25,11 @@ jobs:
       # although the repository owner has a lowercase username, this prevents some people from running actions after forking
       - name: Set repository and image name to lowercase
         run: |
-          echo "IMAGE_NAME=${IMAGE_NAME,,}" >>${GITHUB_ENV}
-          full_name=`${IMAGE_NAME,,} | sed 's:/:-:!'`
-          echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV}
-          echo "MY_PLATFORM_ARCH=${full_name,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV};
+          full_name=`echo ${IMAGE_NAME,,} | sed 's:/:-:'`;
+          platform_and_arch=`echo ${{ matrix.platform }} | sed 's:/:-:'`;
+          echo "FULL_IMAGE_NAME=ghcr.io/${IMAGE_NAME,,}" >>${GITHUB_ENV};
+          echo "MY_PLATFORM_ARCH=${platform_and_arch,,}" >> ${GITHUB_ENV};
         env:
           IMAGE_NAME: '${{ github.repository }}'
 
